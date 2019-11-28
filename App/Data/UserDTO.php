@@ -30,6 +30,10 @@ class UserDTO
      * @var string
      */
     private $lastName;
+
+    /**
+     * @var string
+     */
     private $active;
 
     /**
@@ -123,7 +127,7 @@ class UserDTO
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getActive()
     {
@@ -131,7 +135,7 @@ class UserDTO
     }
 
     /**
-     * @param mixed $active
+     * @param string $active
      * @return UserDTO
      */
     public function setActive($active): UserDTO

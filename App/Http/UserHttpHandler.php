@@ -9,7 +9,7 @@ use Core\DataBinderInterface;
 use Core\TemplateInterface;
 use App\Data\UserDTO;
 
-class UserHttpHandler extends HomeHttpHandler
+class UserHttpHandler extends HttpHandlerAbstract
 {
     /**
      * @var UserServiceInterface
@@ -29,7 +29,7 @@ class UserHttpHandler extends HomeHttpHandler
         if (isset($formData['register'])) {
             $this->handleRegisterProcess($formData);
         } else {
-            $this->render("users/register");
+            $this->render('users/register');
         }
     }
 
@@ -40,9 +40,9 @@ class UserHttpHandler extends HomeHttpHandler
             $user = $this->dataBinder->bind($formData, UserDTO::class);
             $this->userService->register($user, $formData['confirm_password']);
             $_SESSION['email'] = $user->getEmail();
-            $this->redirect("#");
+            $this->redirect("login.php");
         } catch (\Exception $exception) {
-            $this->render("users/register", null, [$exception->getMessage()]);
+            $this->render('users/register', null, [$exception->getMessage()]);
         }
     }
 
@@ -66,12 +66,60 @@ class UserHttpHandler extends HomeHttpHandler
         try {
             $user = $this->userService->login($formData['email'], $formData['password']);
 
-            if ($user !== null) {
-                $_SESSION['id'] = $user->getId();
-                $this->redirect('');
-            }
+            $this->LoadUserOrAdminProfile($user);
         } catch (\Exception $exception) {
             $this->render('users/login', null, [$exception->getMessage()]);
+        }
+    }
+
+    public function profile()
+    {
+        if (!$this->userService->isLogged()) {
+            $this->redirect('login.php');
+        }
+        $currentUser = $this->userService->currentUser();
+
+        $this->render("users/profile", $currentUser);
+    }
+
+    public function edit(array $formData = [])
+    {
+        if (!$this->userService->isLogged()) {
+            $this->redirect('login.php');
+        }
+
+        if (isset($formData['edit'])) {
+            $this->handleEditProcess($formData);
+        } else {
+            $user = $this->userService->currentUser();
+            $this->render('users/edit', $user);
+        }
+    }
+
+    private function handleEditProcess(array $formData)
+    {
+        try {
+            $user = $this->userService->currentUser();
+            $this->userService->edit($formData, $user);
+            $this->LoadUserOrAdminProfile($user);
+        } catch (\Exception $exception) {
+            $user = $this->userService->currentUser();
+            $this->render('users/edit', $user, [$exception->getMessage()]);
+        }
+    }
+
+    /**
+     * @param UserDTO|null $user
+     */
+    private function LoadUserOrAdminProfile(?UserDTO $user): void
+    {
+        if ($user !== null) {
+            $_SESSION['id'] = $user->getId();
+            if ($this->userService->isAdmin()) {
+                $this->redirect('admin_profile.php');
+            } else {
+                $this->redirect('profile.php');
+            }
         }
     }
 }

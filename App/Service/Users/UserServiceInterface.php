@@ -12,5 +12,12 @@ interface UserServiceInterface
     public function login(string $email, string $password) : ?UserDTO;
     public function currentUser() : ?UserDTO;
     public function isLogged() : bool;
-    public function edit(UserDTO $userDTO) :  bool;
+    public function isAdmin(): bool ;
+    public function edit(Array $formData, UserDTO $userDTO) :  bool;
+    /**
+     * @return \Generator|UserDTO[]
+     */
+    public function getAllPending() : \Generator;
+
+    public function editUserStatus(int $userId, string $status) : bool ;
 }

@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `users`
     `first_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `last_name`  varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `password`   varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    `active`     VARCHAR(255)                         NOT NULL DEFAULT 'Pending',
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB
@@ -94,5 +95,7 @@ CREATE TABLE IF NOT EXISTS `users_roles`
 /*!40014 SET FOREIGN_KEY_CHECKS = IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
 
-INSERT INTO `bookstore`.`roles` (`role`) VALUES ('ROLE_ADMIN');
-INSERT INTO `bookstore`.`roles` (`role`) VALUES ('ROLE_USER');
+INSERT INTO `bookstore`.`roles` (`role`)
+VALUES ('ROLE_ADMIN');
+INSERT INTO `bookstore`.`roles` (`role`)
+VALUES ('ROLE_USER');

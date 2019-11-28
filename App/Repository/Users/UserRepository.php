@@ -42,7 +42,8 @@ class UserRepository extends DatabaseAbstract implements UserRepositoryInterface
                     email = ?,
                     password = ?,
                     first_name = ?,
-                    last_name = ?
+                    last_name = ?,
+                    active = ?
                 WHERE id = ?
             "
         )->execute([
@@ -50,6 +51,7 @@ class UserRepository extends DatabaseAbstract implements UserRepositoryInterface
             $userDTO->getPassword(),
             $userDTO->getFirstName(),
             $userDTO->getLastName(),
+            $userDTO->getActive(),
             $id
         ]);
 
@@ -59,7 +61,12 @@ class UserRepository extends DatabaseAbstract implements UserRepositoryInterface
     public function findOneById(int $id): ?UserDTO
     {
         return $this->db->query(
-            "SELECT id, email, first_name, last_name, password
+            "SELECT 
+                    id, 
+                    email, 
+                    password,
+                    first_name AS firstName, 
+                    last_name AS lastName
                 FROM users
                 WHERE id = ?
             "
@@ -71,12 +78,64 @@ class UserRepository extends DatabaseAbstract implements UserRepositoryInterface
     public function findOneByEmail(string $email): ?UserDTO
     {
         return $this->db->query(
-            "SELECT id, email, password, first_name, last_name
+            "SELECT 
+                    id, 
+                    email, 
+                    password,
+                    first_name AS firstName, 
+                    last_name AS lastName, 
+                    active
                 FROM users
                 WHERE email = ?
             "
         )->execute([$email])
             ->fetch(UserDTO::class)
             ->current();
+    }
+
+    /**
+     * @return \Generator|UserDTO[]
+     */
+    public function findAllPending(): \Generator
+    {
+        $usersResult =  $this->db->query(
+            "
+                  SELECT 
+                    id, 
+                    email, 
+                    password,
+                    first_name AS firstName, 
+                    last_name AS lastName, 
+                    active
+                  FROM users
+                  WHERE active = ?
+            "
+        )->execute(["Pending"])
+            ->fetchAssoc();
+
+        foreach ($usersResult as $row) {
+            $user = $this->dataBinder->bind($row, UserDTO::class);
+            yield $user;
+        }
+    }
+
+    public function updateUserStatus(UserDTO $userDTO, string $status): bool
+    {
+        $this->db->query("UPDATE users 
+                SET email = ?, 
+                    password = ?, 
+                    first_name = ?, 
+                    last_name = ?, 
+                    active = ? 
+                WHERE id = ?")
+            ->execute([
+                $userDTO->getEmail(),
+                $userDTO->getPassword(),
+                $userDTO->getFirstName(),
+                $userDTO->getLastName(),
+                $status,
+                $userDTO->getId()
+            ]);
+        return true;
     }
 }
