@@ -83,4 +83,28 @@ class BookRepository extends DatabaseAbstract implements BookRepositoryInterface
             yield $book;
         }
     }
+
+    public function findOneByName(string $name): ?BookDTO
+    {
+        return $this->db->query("
+            SELECT id, name, isbn, description, image
+            FROM books
+            WHERE name = ?
+        ")
+            ->execute([$name])
+            ->fetch(BookDTO::class)
+            ->current();
+    }
+
+    public function findOneByISBN(string $isbn): ?BookDTO
+    {
+        return $this->db->query("
+            SELECT id, name, isbn, description, image
+            FROM books
+            WHERE isbn = ?
+        ")
+            ->execute([$isbn])
+            ->fetch(BookDTO::class)
+            ->current();
+    }
 }

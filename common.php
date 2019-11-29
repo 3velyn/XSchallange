@@ -18,6 +18,7 @@ $userRoleRepository = new \App\Repository\Roles\UserRoleRepository($db, $dataBin
 $userService = new \App\Service\Users\UserService($userRepository, $encryptionService,$userRoleRepository);
 $userHttpHandler = new \App\Http\UserHttpHandler($template, $dataBinder, $userService);
 $adminService = new \App\Service\Admin\AdminService($userService, $userRoleRepository);
-$adminHttpHandler = new \App\Http\AdminHttpHandler($template, $dataBinder, $adminService, $userService);
 
 $bookRepository = new \App\Repository\Books\BookRepository($db, $dataBinder);
+$bookService = new \App\Service\Book\BookService($bookRepository);
+$bookHttpHandler = new \App\Http\BookHttpHandler($template, $dataBinder, $bookService, $userService);

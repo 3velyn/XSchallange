@@ -21,6 +21,14 @@ class BookService implements BookServiceInterface
 
     public function add(BookDTO $bookDTO): bool
     {
+        if ($this->bookRepository->findOneByName($bookDTO->getName())) {
+            throw new \Exception("Already added book with this title.");
+        }
+
+        if ($this->bookRepository->findOneByISBN($bookDTO->getIsbn())) {
+            throw new \Exception("Invalid ISBN.");
+        }
+
         return $this->bookRepository->insert($bookDTO);
     }
 

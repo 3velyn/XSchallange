@@ -24,8 +24,11 @@ CREATE TABLE IF NOT EXISTS `books`
     `isbn`        varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `description` text COLLATE utf8_unicode_ci         NOT NULL,
     `image`       text COLLATE utf8_unicode_ci,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `name` (`name`),
+    UNIQUE KEY `isbn` (`isbn`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 6
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
@@ -49,13 +52,14 @@ CREATE TABLE IF NOT EXISTS `users`
 (
     `id`         int(11)                              NOT NULL AUTO_INCREMENT,
     `email`      varchar(50) COLLATE utf8_unicode_ci  NOT NULL,
+    `password`   varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `first_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `last_name`  varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `password`   varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `active`     VARCHAR(255)                         NOT NULL DEFAULT 'Pending',
+    `active`     varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Pending',
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
