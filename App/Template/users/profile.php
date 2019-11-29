@@ -16,7 +16,7 @@
     <a href="#">My books</a> | <a href="logout.php">Logout</a>
     <br /><br />
     <a href="edit_profile.php?id=<?= $data->getId() ?>">Edit Profile</a><br/>
-    <a href="#">All books</a><br/>
+    <a href="all_books.php">All books</a><br/>
     <a href="index.php">Home</a>
 </div>
 

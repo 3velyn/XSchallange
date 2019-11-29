@@ -14,7 +14,9 @@
     <div>
         <h2>Hello, <?= $data[0]->getFirstName(); ?></h2>
 
-        <a href="#">Pending users</a> | <a href="logout.php">Logout</a>
+        <a href="#">Pending users</a> |
+        <a href="edit_profile.php?id=<?= $data[0]->getId() ?>">Edit profile</a> |
+        <a href="logout.php">Logout</a>
 
         <table>
         <thead>
@@ -38,8 +40,8 @@
         </tbody>
         </table>
         <br/><br/>
-        <a href="edit_profile.php?id=<?= $data[0]->getId() ?>">Edit profile</a>
-        <a href="#">All books</a><br/>
+        <a href="add_book.php">Add Book</a> |
+        <a href="all_books.php">All books</a><br/>
         <a href="index.php">Home</a>
     </div>
 

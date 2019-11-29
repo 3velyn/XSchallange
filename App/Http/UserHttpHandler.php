@@ -78,8 +78,7 @@ class UserHttpHandler extends HttpHandlerAbstract
             $this->redirect('login.php');
         }
         $currentUser = $this->userService->currentUser();
-
-        $this->render("users/profile", $currentUser);
+        $this->LoadUserOrAdminProfile($currentUser);
     }
 
     public function edit(array $formData = [])
@@ -116,9 +115,10 @@ class UserHttpHandler extends HttpHandlerAbstract
         if ($user !== null) {
             $_SESSION['id'] = $user->getId();
             if ($this->userService->isAdmin()) {
-                $this->redirect('admin_profile.php');
+                $allPendingUsers = $this->userService->getAllPending();
+                $this->render('admin/profile', [$user, $allPendingUsers]);
             } else {
-                $this->redirect('profile.php');
+                $this->render('user/profile', $user);
             }
         }
     }
