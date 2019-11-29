@@ -19,3 +19,5 @@ $userService = new \App\Service\Users\UserService($userRepository, $encryptionSe
 $userHttpHandler = new \App\Http\UserHttpHandler($template, $dataBinder, $userService);
 $adminService = new \App\Service\Admin\AdminService($userService, $userRoleRepository);
 $adminHttpHandler = new \App\Http\AdminHttpHandler($template, $dataBinder, $adminService, $userService);
+
+$bookRepository = new \App\Repository\Books\BookRepository($db, $dataBinder);
