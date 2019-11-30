@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>All Books</title>
 </head>
 <body>
 
@@ -28,9 +28,8 @@
             <a href="view_book.php?id=<?= $book->getId() ?>">View</a>
             <?php if ($data[1] === true): ?>
                 <a href="edit_book.php?id=<?= $book->getId() ?>">Edit</a>
-            <?php else: ?>
-                <a href="add_to_my_books.php?id=<?= $book->getId() ?>">Add to My Books</a>
             <?php endif; ?>
+            <a href="add_to_my_books.php?id=<?= $book->getId() ?>">Add to My Books</a>
             <hr/>
         </div>
         <?php endforeach; ?>

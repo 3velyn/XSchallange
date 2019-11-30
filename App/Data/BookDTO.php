@@ -8,7 +8,6 @@ class BookDTO
 {
     private const NAME_MIN_LENGTH = 2;
     private const NAME_MAX_LENGTH = 50;
-    private const NAME_REGEX = '/^[A-Za-z]+$/';
 
     private const ISBN_MIN_LENGTH = 17;
     private const ISBN_MAX_LENGTH = 17;
@@ -74,7 +73,6 @@ class BookDTO
     {
         DTOValidator::validateLength(self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH,
             $name, "Book name");
-        DTOValidator::validate(self::NAME_REGEX, $name, "Book name");
         $this->name = $name;
         return $this;
     }

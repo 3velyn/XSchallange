@@ -19,6 +19,11 @@ class BookService implements BookServiceInterface
         $this->bookRepository = $bookRepository;
     }
 
+    /**
+     * @param BookDTO $bookDTO
+     * @return bool
+     * @throws \Exception
+     */
     public function add(BookDTO $bookDTO): bool
     {
         if ($this->bookRepository->findOneByName($bookDTO->getName())) {

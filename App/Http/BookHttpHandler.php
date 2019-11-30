@@ -57,9 +57,8 @@ class BookHttpHandler extends HttpHandlerAbstract
         try {
             $book = $this->dataBinder->bind($formData, BookDTO::class);
             $this->bookService->add($book);
-            $isAdmin = $this->userService->isAdmin();
 
-            $this->render("books/view", [$book, $isAdmin]);
+            $this->viewAll();
         } catch (\Exception $exception) {
             $this->render("books/create", null, [$exception->getMessage()]);
         }
@@ -77,13 +76,12 @@ class BookHttpHandler extends HttpHandlerAbstract
     public function viewAll()
     {
         $this->loginCheck();
+        $allBooks = $this->bookService->getAll();
         $isAdmin = $this->userService->isAdmin();
 
         try {
-            $allBooks = $this->bookService->getAll();
             $this->render("books/all", [$allBooks, $isAdmin]);
         } catch (\Exception $exception) {
-            $allBooks = $this->bookService->getAll();
             $this->render("books/all", [$allBooks, $isAdmin], [$exception->getMessage()]);
         }
     }

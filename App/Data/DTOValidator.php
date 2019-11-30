@@ -23,6 +23,12 @@ class DTOValidator
         }
     }
 
+    /**
+     * @param $regex
+     * @param $value
+     * @param $fieldName
+     * @throws \Exception
+     */
     public static function validate($regex, $value, $fieldName)
     {
         if (!preg_match($regex, $value)) {
