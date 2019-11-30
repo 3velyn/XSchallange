@@ -97,8 +97,16 @@ class UserService implements UserServiceInterface
 
     public function edit(Array $formData, UserDTO $userDTO): bool
     {
+        if (!$this->encryptionService->verify($formData['old_password'], $userDTO->getPassword())) {
+            throw new \Exception("Current password mismatch!");
+        }
+        if ($formData['password'] !== $formData['confirm_password']) {
+            throw new \Exception("New password and confirm password does not match!");
+        }
+        $userDTO->setPassword($formData['password']);
         $userDTO->setFirstName($formData['first_name']);
         $userDTO->setLastName($formData['last_name']);
+        $this->encryptPassword($userDTO);
         return $this->userRepository->update(intval($userDTO->getId()), $userDTO);
     }
 
