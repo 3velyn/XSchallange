@@ -26,7 +26,11 @@ class BookService implements BookServiceInterface
         }
 
         if ($this->bookRepository->findOneByISBN($bookDTO->getIsbn())) {
-            throw new \Exception("Invalid ISBN.");
+            throw new \Exception("Already have a book with this ISBN.");
+        }
+
+        if ($bookDTO->getDescription() === '') {
+            throw new \Exception("Please add a description.");
         }
 
         return $this->bookRepository->insert($bookDTO);

@@ -6,6 +6,14 @@ namespace App\Data;
 
 class BookDTO
 {
+    private const NAME_MIN_LENGTH = 2;
+    private const NAME_MAX_LENGTH = 50;
+    private const NAME_REGEX = '/^[A-Za-z]+$/';
+
+    private const ISBN_MIN_LENGTH = 17;
+    private const ISBN_MAX_LENGTH = 17;
+    private const ISBN_REGEX = '/^(\d{1,6})[- ](?1)[- ](?1)-(?1)-(?1)$/';
+
     /**
      * @var int
      */
@@ -60,9 +68,13 @@ class BookDTO
     /**
      * @param string $name
      * @return BookDTO
+     * @throws \Exception
      */
     public function setName(string $name): BookDTO
     {
+        DTOValidator::validateLength(self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH,
+            $name, "Book name");
+        DTOValidator::validate(self::NAME_REGEX, $name, "Book name");
         $this->name = $name;
         return $this;
     }
@@ -78,9 +90,13 @@ class BookDTO
     /**
      * @param string $isbn
      * @return BookDTO
+     * @throws \Exception
      */
     public function setIsbn(string $isbn): BookDTO
     {
+        DTOValidator::validateLength(self::ISBN_MIN_LENGTH, self::ISBN_MAX_LENGTH,
+            $isbn, "ISBN");
+        DTOValidator::validate(self::ISBN_REGEX, $isbn, "ISBN");
         $this->isbn = $isbn;
         return $this;
     }
