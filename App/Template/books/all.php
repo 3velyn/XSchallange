@@ -10,8 +10,13 @@
 
     <div>
         <a href="index.php">Home</a> | <a href="profile.php">My Profile</a>
+
+        <?php /** @var array $errors | null */ ?>
+        <?php foreach ($errors as $error): ?>
+            <p><?= $error ?></p>
+        <?php endforeach; ?>
+
         <?php /** @var \App\Data\BookDTO[] $data[0] */ ?>
-        <?php /** @var \App\Data\UserDTO $data[1] */ ?>
         <?php /** @var \App\Data\BookDTO $book */ ?>
         <?php foreach ($data[0] as $book): ?>
         <div>
@@ -24,7 +29,7 @@
             <?php if ($data[1] === true): ?>
                 <a href="edit_book.php?id=<?= $book->getId() ?>">Edit</a>
             <?php else: ?>
-                <a href="add_to_my_books">Add to My Books</a>
+                <a href="add_to_my_books.php?id=<?= $book->getId() ?>">Add to My Books</a>
             <?php endif; ?>
             <hr/>
         </div>

@@ -118,7 +118,7 @@ class UserHttpHandler extends HttpHandlerAbstract
                 $allPendingUsers = $this->userService->getAllPending();
                 $this->render('admin/profile', [$user, $allPendingUsers]);
             } else {
-                $this->render('user/profile', $user);
+                $this->render('users/profile', $user);
             }
         }
     }

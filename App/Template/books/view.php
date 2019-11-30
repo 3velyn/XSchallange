@@ -20,7 +20,7 @@
             <a href="edit_book.php?id=<?= $data[0]->getId() ?>">Edit</a>
             <a href="delete_book.php?id=<?= $data[0]->getId() ?>">Delete</a>
         <?php else: ?>
-            <a href="add_to_my_books">Add to My Books</a>
+            <a href="add_to_my_books.php?id=<?= $data[0]->getId() ?>">Add to My Books</a>
         <?php endif; ?>
         <a href="all_books.php">All Books</a>
     </div>

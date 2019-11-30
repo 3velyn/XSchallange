@@ -13,7 +13,7 @@
 <div>
     <h2>Hello, <?= $data->getFirstName(); ?></h2>
 
-    <a href="#">My books</a> | <a href="logout.php">Logout</a>
+    <a href="my_books.php">My books</a> | <a href="logout.php">Logout</a>
     <br /><br />
     <a href="edit_profile.php?id=<?= $data->getId() ?>">Edit Profile</a><br/>
     <a href="all_books.php">All books</a><br/>

@@ -21,4 +21,6 @@ $adminService = new \App\Service\Admin\AdminService($userService, $userRoleRepos
 
 $bookRepository = new \App\Repository\Books\BookRepository($db, $dataBinder);
 $bookService = new \App\Service\Book\BookService($bookRepository);
-$bookHttpHandler = new \App\Http\BookHttpHandler($template, $dataBinder, $bookService, $userService);
+$userBookRepository = new \App\Repository\UsersBooks\UserBookRepository($db, $dataBinder);
+$userBookService = new \App\Service\UserBook\UserBookService($userBookRepository);
+$bookHttpHandler = new \App\Http\BookHttpHandler($template, $dataBinder, $bookService, $userService, $userBookService);

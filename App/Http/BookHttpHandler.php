@@ -6,6 +6,7 @@ namespace App\Http;
 
 use App\Data\BookDTO;
 use App\Service\Book\BookServiceInterface;
+use App\Service\UserBook\UserBookServiceInterface;
 use App\Service\Users\UserServiceInterface;
 use Core\DataBinderInterface;
 use Core\TemplateInterface;
@@ -22,14 +23,21 @@ class BookHttpHandler extends HttpHandlerAbstract
      */
     private $userService;
 
+    /**
+     * @var UserBookServiceInterface
+     */
+    private $userBookService;
+
     public function __construct(TemplateInterface $template,
                                 DataBinderInterface $dataBinder,
                                 BookServiceInterface $bookService,
-                                UserServiceInterface $userService)
+                                UserServiceInterface $userService,
+                                UserBookServiceInterface $userBookService)
     {
         parent::__construct($template, $dataBinder);
         $this->bookService = $bookService;
         $this->userService = $userService;
+        $this->userBookService = $userBookService;
     }
 
     public function create(array $formData)
@@ -114,7 +122,39 @@ class BookHttpHandler extends HttpHandlerAbstract
         $this->adminCheck();
 
         $this->bookService->delete(intval($getData['id']));
+        $this->userBookService->delete(intval($getData['id']));
         $this->redirect("all_books.php");
+    }
+
+    public function addToMyBooks(array $getData)
+    {
+        $this->loginCheck();
+        $currentUser = $this->userService->currentUser();
+
+
+        try {
+            $this->userBookService->add(intval($currentUser->getId()), intval($getData['id']));
+            $this->redirect("my_books.php");
+        } catch (\Exception $exception) {
+            $allBooks = $this->bookService->getAll();
+            $isAdmin = $this->userService->isAdmin();
+            $this->render("books/all", [$allBooks, $isAdmin], [$exception->getMessage()]);
+        }
+
+    }
+
+    public function deleteFromMyBooks(array $getData)
+    {
+
+    }
+
+    public function myBooks()
+    {
+        $this->loginCheck();
+        $currentUser = $this->userService->currentUser();
+
+        $books = $this->userBookService->getAllByUser(intval($currentUser->getId()));
+        $this->render("books/my_books", $books);
     }
 
     private function loginCheck(): void
