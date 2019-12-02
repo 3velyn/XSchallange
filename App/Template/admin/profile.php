@@ -1,6 +1,3 @@
-<?php /** @var  \App\Data\UserDTO $data [0] */ ?>
-<?php /** @var \App\Data\UserDTO $user */ ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +23,8 @@
             <a href="logout.php" class="btn btn-primary">Logout</a>
         </div>
     </nav>
-
+    <?php /** @var  \App\Data\UserDTO $data[0] */ ?>
+    <?php /** @var \App\Data\UserDTO $user */ ?>
     <h2>Hello, <?= $data[0]->getFirstName(); ?></h2>
 
     <a href="edit_profile.php?id=<?= $data[0]->getId() ?>" class="btn btn-primary">Edit profile</a>
