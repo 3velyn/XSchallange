@@ -4,36 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>All Books</title>
 </head>
 <body>
 
-    <div>
-        <a href="index.php">Home</a> | <a href="profile.php">My Profile</a>
+<div class="container">
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <a href="all_books.php" class="btn btn-primary">Home</a>
+        <div class="btn float-right">
+            <a href="profile.php" class="btn btn-primary">Profile</a>
+            <a href="logout.php" class="btn btn-primary">Logout</a>
+        </div>
+    </nav>
 
-        <?php /** @var array $errors | null */ ?>
-        <?php foreach ($errors as $error): ?>
+
+    <?php /** @var array $errors | null */ ?>
+    <?php foreach ($errors as $error): ?>
+        <div class="alert alert-danger" role="alert">
             <p><?= $error ?></p>
-        <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
 
-        <?php /** @var \App\Data\BookDTO[] $data[0] */ ?>
+    <div class="row justify-content-start">
+        <?php /** @var \App\Data\BookDTO[] $data [0] */ ?>
         <?php /** @var \App\Data\BookDTO $book */ ?>
         <?php foreach ($data[0] as $book): ?>
-        <div>
-            <h2><?= $book->getName() ?></h2>
-            <a href="view_book.php?id=<?= $book->getId() ?>"><img src="<?= $book->getImage() ?>"></a>
+            <div class="card col-4" style="width: 29px;">
+                <h2><?= $book->getName() ?></h2>
 
-            <p>ISBN: <?= $book->getIsbn() ?></p>
-            <p>Description: <?= substr($book->getDescription(), 0, 150) . "..." ?></p>
-            <a href="view_book.php?id=<?= $book->getId() ?>">View</a>
-            <?php if ($data[1] === true): ?>
-                <a href="edit_book.php?id=<?= $book->getId() ?>">Edit</a>
-            <?php endif; ?>
-            <a href="add_to_my_books.php?id=<?= $book->getId() ?>">Add to My Books</a>
-            <hr/>
-        </div>
+                <?php if ($book->getImage()): ?>
+                <a href="view_book.php?id=<?= $book->getId() ?>"><img src="<?= $book->getImage() ?>"
+                                                                      class="card-img-top"></a>
+                <?php else: ?>
+                <a href="view_book.php?id=<?= $book->getId() ?>"><img src="Web/img/1461-512.png"
+                                                                      class="card-img-top"></a>
+                <?php endif; ?>
+
+                <div class="card-body">
+                    <p>ISBN: <?= $book->getIsbn() ?></p>
+                    <p>Description: <?= substr($book->getDescription(), 0, 150) . "..." ?></p>
+                </div>
+                <div class="text-left">
+                    <a href="view_book.php?id=<?= $book->getId() ?>" class="btn btn-info">View</a>
+                    <a href="add_to_my_books.php?id=<?= $book->getId() ?>" class="btn btn-success">Add to My Books</a>
+                </div>
+            </div>
         <?php endforeach; ?>
     </div>
+</div>
 
 </body>
 </html>

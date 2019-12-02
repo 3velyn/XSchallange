@@ -77,12 +77,12 @@ class BookHttpHandler extends HttpHandlerAbstract
     {
         $this->loginCheck();
         $allBooks = $this->bookService->getAll();
-        $isAdmin = $this->userService->isAdmin();
+        $isLogged = $this->userService->isLogged();
 
         try {
-            $this->render("books/all", [$allBooks, $isAdmin]);
+            $this->render("books/all", [$allBooks, $isLogged]);
         } catch (\Exception $exception) {
-            $this->render("books/all", [$allBooks, $isAdmin], [$exception->getMessage()]);
+            $this->render("books/all", [$allBooks, $isLogged], [$exception->getMessage()]);
         }
     }
 
@@ -103,12 +103,14 @@ class BookHttpHandler extends HttpHandlerAbstract
     private function handleEditProcess(BookDTO $book, array $formData)
     {
         try {
-            $editBook = $this->dataBinder->bind($formData, BookDTO::class);
-            /** @var BookDTO $editBook */
-            $editBook->setId($book->getId());
-            $editBook->setName($book->getName());
-            $this->bookService->edit($editBook);
-            $this->render("books/view", $editBook);
+            $editedBook = $this->dataBinder->bind($formData, BookDTO::class);
+            /** @var BookDTO $editedBook */
+            $editedBook->setId($book->getId());
+            $editedBook->setName($book->getName());
+            $this->bookService->edit($editedBook);
+            $isAdmin = $this->userService->isAdmin();
+
+            $this->render("books/view", [$editedBook, $isAdmin]);
         } catch (\Exception $exception) {
             $this->render("books/edit", $book, [$exception->getMessage()]);
         }
@@ -129,21 +131,24 @@ class BookHttpHandler extends HttpHandlerAbstract
         $this->loginCheck();
         $currentUser = $this->userService->currentUser();
 
-
         try {
             $this->userBookService->add(intval($currentUser->getId()), intval($getData['id']));
             $this->redirect("my_books.php");
         } catch (\Exception $exception) {
             $allBooks = $this->bookService->getAll();
-            $isAdmin = $this->userService->isAdmin();
-            $this->render("books/all", [$allBooks, $isAdmin], [$exception->getMessage()]);
+            $isLogged = $this->userService->isLogged();
+            $this->render("books/all", [$allBooks, $isLogged], [$exception->getMessage()]);
         }
 
     }
 
     public function deleteFromMyBooks(array $getData)
     {
+        $this->loginCheck();
+        $currentUser = $this->userService->currentUser();
 
+        $this->userBookService->deleteForCurrentUser(intval($currentUser->getId()), intval($getData['id']));
+        $this->myBooks();
     }
 
     public function myBooks()

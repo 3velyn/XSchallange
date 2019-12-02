@@ -4,31 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Edit Book</title>
 </head>
 <body>
+<div class="container">
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <a href="all_books.php" class="btn btn-primary">Home</a>
+        <div class="btn float-right">
+            <a href="profile.php" class="btn btn-primary">Profile</a>
+            <a href="logout.php" class="btn btn-primary">Logout</a>
+        </div>
+    </nav>
 
-<?php /** @var array $errors | null */ ?>
-<?php foreach ($errors as $error): ?>
-    <p><?= $error ?></p>
-<?php endforeach; ?>
+    <?php /** @var array $errors | null */ ?>
+    <?php foreach ($errors as $error): ?>
+        <div class="alert alert-danger" role="alert">
+            <p><?= $error ?></p>
+        </div>
+    <?php endforeach; ?>
 
-<?php /** @var \App\Data\BookDTO $data */ ?>
-<div>
-    <form method="post">
-        <h1><?= $data->getName() ?></h1>
+    <?php /** @var \App\Data\BookDTO $data */ ?>
+    <h1><?= $data->getName() ?></h1>
 
-        <label for="isbn">ISBN:</label>
-        <input type="text" id="isbn" name="isbn" value="<?= $data->getIsbn() ?>">
+    <form method="post" class="form-inline">
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" value="<?= $data->getDescription() ?>"></textarea>
+        <div class="form-group">
+            <label for="isbn" class="col-sm-2 col-form-label">ISBN:</label>
+            <div class="col-sm-10">
+                <input type="text" id="isbn" name="isbn" class="form-control" value="<?= $data->getIsbn() ?>">
+            </div>
+        </div>
 
-        <label for="image_url">Image URL:</label>
-        <input type="url" id="image_url" name="image" alt="" value="<?= $data->getImage() ?>">
+        <div class="form-group shadow-textarea">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" class="form-control "><?= $data->getDescription() ?></textarea>
+        </div>
 
-        <input type="submit" name="edit" value="Edit Book">
-        <a href="delete_book.php?id=<?= $data->getId() ?>">Delete</a>
+        <div class="form-group">
+            <label for="image_url" class="col-sm-2 col-form-label">Image URL:</label>
+            <div class="col-sm-10">
+                <input type="url" id="image_url" name="image" alt="" class="form-control" value="<?= $data->getImage() ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" name="edit" value="Edit Book" class="btn btn-success">
+        </div>
     </form>
 </div>
 

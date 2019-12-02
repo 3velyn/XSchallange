@@ -7,8 +7,6 @@ $template = new \Core\Template();
 $dataBinder = new \Core\DataBinder();
 $dbInfo = parse_ini_file("Config/db.ini");
 
-$homeHttpHandler = new \App\Http\HomeHttpHandler($template, $dataBinder);
-
 $pdo = new PDO($dbInfo['dsn'], $dbInfo['user'], $dbInfo['pass']);
 $db = new \Database\PDODatabase($pdo);
 $encryptionService = new \App\Service\Encryption\BcryptEncryptionService();
@@ -21,6 +19,7 @@ $adminService = new \App\Service\Admin\AdminService($userService, $userRoleRepos
 
 $bookRepository = new \App\Repository\Books\BookRepository($db, $dataBinder);
 $bookService = new \App\Service\Book\BookService($bookRepository);
+$homeHttpHandler = new \App\Http\HomeHttpHandler($template, $dataBinder, $bookService);
 $userBookRepository = new \App\Repository\UsersBooks\UserBookRepository($db, $dataBinder);
 $userBookService = new \App\Service\UserBook\UserBookService($userBookRepository);
 $bookHttpHandler = new \App\Http\BookHttpHandler($template, $dataBinder, $bookService, $userService, $userBookService);
